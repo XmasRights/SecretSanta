@@ -16,53 +16,53 @@ def getList(filename):
     return content
 
 def generateSecretSanta(names):
-    hatOfNames = list(names)
-    output     = []
-    selctions  = recursiveHatPicking (names, hatOfNames, output)
+    output = []
+    count  = 0
+    while output == []:
+        namesList = list(names)
+        hatList   = list(names)
+        recursiveHatPicking (namesList, hatList, output)
+        print "Output: " + str(output)
+        count = count + 1
+
+    print "Had to run recursion " + str(count) + " times"
 
     return output
 
 def recursiveHatPicking(names, hatOfNames, output):
+
+    print "Names: " + str(names)
+    print "Hat:   " + str(hatOfNames)
+
     if len(hatOfNames) == 0:
         print "THE HAT IS EMPTY"
-        return output
+        return
 
     elif len(names) == 1 and hatOfNames[0] == names[0]:
         #if the last name in both lists are identical
         print "NAMES ABORT ON " + str(names[0]) + " and " + hatOfNames[0]
-        output = []
-        return output
+        del output[:]
+        return
 
-
-    print "HAT OF NAMES before"
-    print hatOfNames
-    (pick, hatOut) = removeRandomName(hatOfNames)
-
-    print "Hat of Names after removal of " + pick
-    print hatOfNames
+    pick = removeRandomName(hatOfNames)
 
     if (pick != names[0]):
         print names[0] + " has picked " + pick
         output.append (names[0] + " has picked " + pick)
         del names[0]
-        recursiveHatPicking(names, hatOut, output)
+        recursiveHatPicking(names, hatOfNames, output)
     else:
         print "Duplicate " + pick + " and " + names[0]
-        print "HATout"
-        print hatOut
         print "HAT OF NAMES"
         print hatOfNames
-
-
+        hatOfNames.append(pick)
         recursiveHatPicking(names, hatOfNames, output)
 
 def removeRandomName(names):
     randNo = random.randrange(0, len(names), 1)
     name = names[randNo]
-    namesOut = list(names)
-    del namesOut[randNo]
-
-    return (name, names)
+    del names[randNo]
+    return name
 
 ###############################
 # Main                        #
@@ -77,17 +77,4 @@ else:
 inFile     = sys.argv[1]
 namesList  = getList(inFile)
 
-print "IN NAMES: "
-print namesList
-
-count = 0
-while True:
-    output = generateSecretSanta (namesList)
-
-    if (output == []):
-        break
-    else:
-        print output
-        count += 1
-
-print "Got through " + str(count) + " loops before a fault"
+generatedList = generateSecretSanta(namesList)
