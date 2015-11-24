@@ -4,7 +4,7 @@ import sys
 import random
 
 ###############################
-# Helpful Functions           #
+# Read/Write Files
 ###############################
 
 def getList(filename):
@@ -14,6 +14,16 @@ def getList(filename):
             formatted = line.rstrip('\n').rstrip('\r')
             content.append(formatted)
     return content
+
+def writeList(theList):
+    file = open("output.txt", "w")
+    for line in theList:
+        file.write(line)
+        file.write("\n")
+
+###############################
+# Secret Santa Recursion
+###############################
 
 def generateSecretSanta(names):
     output = []
@@ -63,5 +73,4 @@ inFile     = sys.argv[1]
 namesList  = getList(inFile)
 
 generatedList = generateSecretSanta(namesList)
-
-print generatedList
+writeList(generatedList)
